@@ -92,6 +92,11 @@ function fieldError(field, answers) {
       if (!detail || !String(detail).trim()) return "otherMissing";
     }
   }
+  // Same for a single-choice "Other" (e.g. seniority).
+  if (field.type === "single" && field.hasOther && answers[field.key] === "other") {
+    const detail = answers[`${field.key}_other`];
+    if (!detail || !String(detail).trim()) return "otherMissing";
+  }
   return null;
 }
 
@@ -125,6 +130,7 @@ export function buildPayload(answers, token, locale) {
   const arr = (k) => (Array.isArray(answers[k]) ? answers[k] : []);
   const bool = (k) => answers[k] === true;
   const otherOf = (k) => (arr(k).includes("other") ? text(`${k}_other`) : "");
+  const otherOfSingle = (k) => (answers[k] === "other" ? text(`${k}_other`) : "");
 
   return {
     invitation_token: token || "",
@@ -144,7 +150,9 @@ export function buildPayload(answers, token, locale) {
     // Your standing
     years_experience: answers.years_experience || "",
     current_status: arr("current_status"),
+    current_status_other: otherOf("current_status"),
     seniority_reached: answers.seniority_reached || "",
+    seniority_reached_other: otherOfSingle("seniority_reached"),
     title: text("title"),
     work_status: answers.work_status || "",
     institution: text("institution"),

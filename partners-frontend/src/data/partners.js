@@ -40,11 +40,12 @@ const statusOptions = [
   { value: "serving_csuite", en: "A serving C-suite executive (CxO)", ar: "تنفيذي في الإدارة العليا (CxO) حالياً" },
   { value: "chair_board", en: "A chairman or board member", ar: "رئيس أو عضو مجلس إدارة" },
   { value: "gov_leader", en: "A senior government or public-sector leader", ar: "قيادي حكومي أو في القطاع العام" },
-  { value: "former_exec", en: "A former executive, now advising or investing", ar: "تنفيذي سابق، يعمل الآن في الاستشارة أو الاستثمار" },
+  { value: "former_exec", en: "A former executive, now advising or investing", ar: "تنفيذي سابق، تعمل الآن كمستشار" },
   { value: "prof_services", en: "A managing partner or leader in professional services (consulting, law, audit)", ar: "شريك إداري أو قيادي في الخدمات المهنية (استشارات، قانون، تدقيق)" },
   { value: "founder", en: "A founder or business owner", ar: "مؤسس أو صاحب عمل" },
-  { value: "investor", en: "An investor, fund manager or family-office principal", ar: "مستثمر أو مدير صندوق أو مسؤول مكتب عائلي" },
+  { value: "investor", en: "An investor, fund manager or family-office principal", ar: "مستثمر أو مدير صندوق" },
   { value: "independent_authority", en: "An independent advisor or recognised sector authority", ar: "مستشار مستقل أو مرجع قطاعي معروف" },
+  { value: "other", en: "Other (please specify)", ar: "أخرى (يرجى التحديد)" },
 ];
 
 const seniorityOptions = [
@@ -55,10 +56,11 @@ const seniorityOptions = [
   { value: "md_partner", en: "Managing Director or Partner", ar: "عضو منتدب أو شريك" },
   { value: "vp_gm", en: "Vice President or General Manager", ar: "نائب رئيس أو مدير عام" },
   { value: "director", en: "Senior Director or Head of function", ar: "مدير أول أو رئيس إدارة" },
+  { value: "other", en: "Other (please specify)", ar: "أخرى (يرجى التحديد)" },
 ];
 
 const workStatusOptions = [
-  { value: "within", en: "Within an institution", ar: "ضمن مؤسسة" },
+  { value: "within", en: "Within an institution", ar: "ضمن منشأة" },
   { value: "independent", en: "Working independently", ar: "أعمل بشكل مستقل" },
 ];
 
@@ -174,7 +176,7 @@ const appealsOptions = [
   { value: "access", en: "Access to mandates and relationships worthy of your experience", ar: "الوصول إلى تكليفات وعلاقات تليق بخبرتك" },
   { value: "infrastructure", en: "The team and infrastructure behind every engagement", ar: "الفريق والإسناد خلف كل مهمة" },
   { value: "sector_build", en: "The opportunity to shape a sector and build lasting work", ar: "فرصة تطوير قطاع وبناء أثر باقٍ" },
-  { value: "peers", en: "The company of a selective circle of peers", ar: "صحبة نخبة من النظراء" },
+  { value: "peers", en: "The company of a selective circle of peers", ar: "الانضمام إلى مجتمع من القادة والخبراء" },
   { value: "recognition", en: "Fair recognition for the value you create", ar: "تقدير عادل لما تقدّمه من قيمة" },
 ];
 
@@ -226,11 +228,11 @@ export const SCREENS = [
       },
       house: {
         en: "B&P House is where Bisher & Partners brings together those who possess precisely this: senior leaders, sector authorities, and respected professionals who continue to apply their experience to work of substance, within an institution worthy of it.",
-        ar: "في B&P House تجمع بشر وشركاؤه نخبةً ممن يملكون ذلك: قادةً كباراً، وخبراء قطاعيين، ومهنيين مرموقين، يواصلون توظيف خبرتهم في أعمال ذات قيمة، ضمن مؤسسة تليق بهم.",
+        ar: "في B&P House تجمع بشر وشركاؤه نخبةً ممن يملكون ذلك: قادة كبار، وخبراء قطاعيين، ومهنيين مرموقين، يواصلون توظيف خبرتهم في أعمال ذات قيمة، ضمن كيان يليق بهم.",
       },
       invitation: {
         en: "You are invited to take your place among them, as a Senior Partner of Bisher & Partners.",
-        ar: "وأنت مدعوّ للانضمام إليهم، شريكاً أول في بشر وشركاؤه.",
+        ar: "وأنت مدعوّ للانضمام إليهم، كشريك أول في بشر وشركاؤه.",
       },
       role: {
         en: "The role is yours to define. You offer your judgment where it is of greatest value, extend an introduction where you judge it fitting, and take the lead upon the files that command your interest. In support of this, Bisher & Partners provides its name, its teams, and the discipline of its delivery, so that a single conversation may become a considered and well-executed engagement. The measure of your involvement remains yours to determine, and your contribution is duly recognised and protected.",
@@ -238,7 +240,7 @@ export const SCREENS = [
       },
       appeal: {
         en: "For many who accept, the appeal lies in consequence itself: the opportunity to shape a sector, to take part in endeavours of genuine merit, and to build something that endures, in the company of equals.",
-        ar: "وما يجذب كثيرين هو الأثر نفسه: فرصة للإسهام في تطوير قطاع، والمشاركة في أعمال ذات قيمة حقيقية، وبناء ما يبقى، بين نظراء لهم.",
+        ar: "وما يجذب كثيرين هو الأثر نفسه: فرصة للإسهام في تطوير قطاعات، والمشاركة في أعمال ذات قيمة حقيقية، وبناء ما يبقى، بين نظراء لهم.",
       },
       trust: {
         en: "All of this rests upon discretion. What you confide, and the relationships you choose to share, are held in the strictest confidence and treated with the care your standing warrants.",
@@ -246,7 +248,7 @@ export const SCREENS = [
       },
       close: {
         en: "This invitation is personal, and it has been extended with intention. What follows is a brief introduction, so that we may come to know you, and the points at which your interests meet our own. We would be honoured by your consideration.",
-        ar: "هذه دعوة شخصية، وُجِّهت إليك عن قصد. وما يلي تعريف موجز نتعرّف به إليك، ونرى أين تلتقي اهتماماتك باهتماماتنا. ويسعدنا أن تنظر فيها.",
+        ar: "هذه دعوة شخصية، وُجِّهت إليك عن قصد. وما يلي تعريف موجز نتعرّف به إليك، ونرى أين تلتقي اهتماماتك باهتماماتنا.",
       },
     },
     reassurance: {
@@ -272,7 +274,7 @@ export const SCREENS = [
       { id: "mobile", key: "mobile", type: "tel", required: true, autoComplete: "tel",
         label: { en: "Mobile number", ar: "رقم الجوال" } },
       { id: "based", key: "based_in", type: "text", required: true,
-        label: { en: "Where you are mostly based", ar: "أين مقرّك في الغالب" } },
+        label: { en: "Where you are mostly based", ar: "أين متواجد في الغالب" } },
       { id: "nationality", key: "nationality", type: "country", required: true,
         label: { en: "Nationality", ar: "الجنسية" } },
       { id: "linkedin", key: "linkedin", type: "url", required: false,
@@ -291,10 +293,10 @@ export const SCREENS = [
     fields: [
       { id: "years", key: "years_experience", type: "single", required: true, options: yearsOptions,
         label: { en: "Years of professional experience", ar: "سنوات الخبرة المهنية" } },
-      { id: "status", key: "current_status", type: "multi", required: true, options: statusOptions,
+      { id: "status", key: "current_status", type: "multi", required: true, hasOther: true, options: statusOptions,
         label: { en: "Which best describes you today", ar: "ما الذي يصفك اليوم" },
         helper: { en: "Choose any that apply.", ar: "اختر ما ينطبق." } },
-      { id: "seniority", key: "seniority_reached", type: "single", required: true, options: seniorityOptions,
+      { id: "seniority", key: "seniority_reached", type: "single", required: true, hasOther: true, options: seniorityOptions,
         label: { en: "The highest level of seniority you have reached", ar: "أعلى منصب وصلت إليه" } },
       { id: "title", key: "title", type: "text", required: true,
         label: { en: "Your current or most recent title", ar: "منصبك الحالي أو الأخير" },
@@ -302,8 +304,8 @@ export const SCREENS = [
       { id: "workstatus", key: "work_status", type: "single", required: true, options: workStatusOptions,
         label: { en: "Your current standing", ar: "وضعك الحالي" } },
       { id: "org", key: "institution", type: "text", required: true,
-        label: { en: "Your institution", ar: "مؤسستك" },
-        altLabel: { en: "Your most recent institution", ar: "مؤسستك الأخيرة" },
+        label: { en: "Your institution", ar: "منشأتك الحالية" },
+        altLabel: { en: "Your most recent institution", ar: "منشأتك الأخيرة" },
         altWhen: { key: "work_status", value: "independent" } },
       { id: "qualification", key: "qualification", type: "single", required: true, options: qualificationOptions,
         label: { en: "Highest academic qualification", ar: "أعلى مؤهل علمي" } },
@@ -318,9 +320,9 @@ export const SCREENS = [
     heading: { en: "Your expertise", ar: "مجالات خبرتك" },
     intro: { en: "The areas and sectors where your judgment carries the most weight.", ar: "المجالات والقطاعات التي يكون لرأيك فيها أكبر الأثر." },
     fields: [
-      { id: "expertise", key: "expertise_areas", type: "multi", required: true, max: 4, hasOther: true, options: expertiseOptions,
+      { id: "expertise", key: "expertise_areas", type: "multi", required: true, max: 6, hasOther: true, options: expertiseOptions,
         label: { en: "Your principal areas of expertise", ar: "أبرز مجالات خبرتك" },
-        helper: { en: "Choose up to four.", ar: "اختر حتى أربعة." } },
+        helper: { en: "Choose up to six.", ar: "اختر حتى ستة." } },
       { id: "sectors", key: "sectors", type: "multi", required: true, max: 4, hasOther: true, options: sectorsOptions,
         label: { en: "Sectors where you have real depth", ar: "القطاعات التي تملك فيها خبرة حقيقية" },
         helper: { en: "Choose up to four.", ar: "اختر حتى أربعة." } },

@@ -500,7 +500,13 @@ function reviewLabel(field, answers, locale) {
 
 function formatAnswer(field, answers, locale) {
   const v = answers[field.key];
-  if (field.type === "single" || field.type === "select") return optionLabel(field.options, v, locale);
+  if (field.type === "single" || field.type === "select") {
+    if (v === "other" && field.hasOther) {
+      const detail = answers[`${field.key}_other`];
+      return detail ? String(detail).trim() : optionLabel(field.options, v, locale);
+    }
+    return optionLabel(field.options, v, locale);
+  }
   if (field.type === "country") return countryName(v, locale);
   if (field.type === "multi") {
     const sep = locale === "ar" ? "، " : ", ";

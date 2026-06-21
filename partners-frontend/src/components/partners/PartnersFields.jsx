@@ -190,7 +190,8 @@ function OptionRow({ selected, onClick, role, label, marker, disabled }) {
   );
 }
 
-function SingleChoice({ field, value, onChange, locale, ui }) {
+function SingleChoice({ field, answers, value, onChange, locale, ui }) {
+  const showOther = field.hasOther && value === "other";
   return (
     <FieldShell label={pick(field.label, locale)} required={field.required} helper={field.helper ? pick(field.helper, locale) : null} ui={ui}>
       <div className="bnp-pf-options" role="radiogroup" aria-label={pick(field.label, locale)}>
@@ -205,6 +206,15 @@ function SingleChoice({ field, value, onChange, locale, ui }) {
           />
         ))}
       </div>
+      {showOther && (
+        <input
+          className="bnp-pf-other"
+          type="text"
+          value={(answers && answers[`${field.key}_other`]) || ""}
+          onChange={(e) => onChange(`${field.key}_other`, e.target.value)}
+          placeholder={ui.otherPlaceholder}
+        />
+      )}
     </FieldShell>
   );
 }
@@ -287,7 +297,7 @@ export default function FieldRenderer({ field, form, locale, ui }) {
     case "country":
       return <CountryField field={field} value={answers[field.key]} onChange={setValue} locale={locale} ui={ui} />;
     case "single":
-      return <SingleChoice field={field} value={answers[field.key]} onChange={setValue} locale={locale} ui={ui} />;
+      return <SingleChoice field={field} answers={answers} value={answers[field.key]} onChange={setValue} locale={locale} ui={ui} />;
     case "multi":
       return <MultiChoice field={field} answers={answers} onToggle={toggleMulti} onValue={setValue} locale={locale} ui={ui} />;
     case "ordered":
