@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+    <!-- Favicon & Icons -->
+    <link rel="icon" href="/img/favicon/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/img/favicon/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/favicon/apple-touch-icon.png" />
+
+    <!-- Private, invitation-only platform: keep it out of the index -->
+    <title>B&amp;P House | Bisher &amp; Partners</title>
+    <meta name="description" content="A private invitation to take your place as a Senior Partner of Bisher & Partners." />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="author" content="Bisher &amp; Partners" />
+
+    <!-- Template Styles -->
+    <link rel="stylesheet" type="text/css" href="/css/loader.css" />
+    <link rel="stylesheet" type="text/css" href="/css/plugins.css" />
+    <link rel="stylesheet" type="text/css" href="/css/main.css" />
+
+    <!-- Arabic typography (IBM Plex Sans Arabic, paired with Manrope for English) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&display=swap" />
+
+    <!-- RTL + Arabic + language-switcher overrides (must load AFTER main.css) -->
+    <link rel="stylesheet" type="text/css" href="/css/rtl-i18n.css" />
+
+    <!-- Mobile + tablet refinements (must load AFTER main.css and rtl-i18n.css) -->
+    <link rel="stylesheet" type="text/css" href="/css/bnp-mobile.css" />
+
+    <!-- Pre-React locale detection: avoid LTR flash before LocaleProvider mounts -->
+    <script>
+      (function () {
+        try {
+          var p = window.location.pathname || '/';
+          if (p === '/ar' || p.indexOf('/ar/') === 0) {
+            document.documentElement.setAttribute('lang', 'ar');
+            document.documentElement.setAttribute('dir', 'rtl');
+            document.documentElement.classList.add('locale-ar');
+          }
+        } catch (e) {}
+      })();
+    </script>
+
+    <!-- Custom Browser Color -->
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#EEEAE8" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0f0f0f" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <!-- Style preloads -->
+    <link rel="preload" as="style" href="/css/main.css" />
+    <link rel="preload" as="style" href="/css/rtl-i18n.css" />
+    <link rel="preload" as="style" href="/css/bnp-mobile.css" />
+
+    <!-- Animation Libraries (global, must load before React) -->
+    <script src="/js/libs.min.js"></script>
+    <!-- Ensures loader dismisses even when placeholder images fail to load -->
+    <script src="/js/loader-patch.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <!-- Animation Engine -->
+    <script src="/js/app.js"></script>
+    <!-- React-SPA animation bridge -->
+    <script src="/js/react-bridge.js"></script>
+
+    <!-- React Entry -->
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

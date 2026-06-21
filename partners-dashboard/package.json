@@ -1,0 +1,25 @@
+{
+  "name": "bnp-partners-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "B&P House partner onboarding - internal review & analytics dashboard (JWT-protected)",
+  "type": "module",
+  "scripts": {
+    "dev": "node node_modules/vite/bin/vite.js",
+    "start": "node node_modules/vite/bin/vite.js",
+    "build": "node node_modules/vite/bin/vite.js build",
+    "preview": "node node_modules/vite/bin/vite.js preview"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.28.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^6.0.5"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

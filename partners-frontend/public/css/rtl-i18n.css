@@ -1,0 +1,461 @@
+/* ===========================================================================
+   RTL + Arabic + Language Switcher overrides
+   ----------------------------------------------------------------------------
+   Loaded after main.css so these rules win cleanly. Strategy:
+     1. Apply IBM Plex Sans Arabic across all Arabic pages.
+     2. Add an `[dir="rtl"]` and `.locale-ar` scope for any directional fix.
+     3. Mirror right-pointing arrow icons in RTL.
+     4. Style the language toggle button to sit cleanly next to the existing
+        circular color-switcher.
+   ========================================================================= */
+
+/* ---- 1. Arabic typography ------------------------------------------------- */
+:root {
+  --ff-arabic: "IBM Plex Sans Arabic", "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* High-specificity, cascading font rule so every text element on Arabic
+   pages renders in IBM Plex Sans Arabic (incl. footer nav, menu items,
+   buttons, breadcrumbs, hero, accordion, and tag pills). */
+html[lang="ar"],
+html[lang="ar"] body,
+html[lang="ar"] *:not(.material-icons):not(i):not(svg):not([class*="ph-"]),
+.locale-ar,
+.locale-ar body,
+.locale-ar *:not(.material-icons):not(i):not(svg):not([class*="ph-"]) {
+  font-family: var(--ff-arabic) !important;
+  letter-spacing: 0;
+}
+
+/* Slightly looser line-height for Arabic body text (diacritics, descenders). */
+.locale-ar p,
+.locale-ar li,
+.locale-ar .t-medium,
+.locale-ar .t-large,
+.locale-ar .t-bold,
+.locale-ar .manifest,
+.locale-ar .footer-data,
+.locale-ar .mxd-article__normal,
+.locale-ar .mxd-article__excerpt {
+  line-height: 1.7;
+}
+
+.locale-ar h1, .locale-ar h2 {
+  line-height: 1.25;
+}
+
+.locale-ar h1, .locale-ar h2, .locale-ar h3 {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+/* ---- 2. Language switcher button ------------------------------------------
+   Visual goal: match the design language of the existing `.mxd-color-switcher`
+   (circular on mobile, text-on-line on desktop). No pill / no filled
+   background; the switcher reads as a typographic toggle rather than a CTA. */
+.mxd-language-switcher {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.6rem;
+  height: 3.6rem;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  color: var(--t-bright);
+  font: normal 700 1.4rem/1 var(--_font-accent);
+  text-transform: uppercase;
+  letter-spacing: -0.02rem;
+  cursor: pointer;
+  transition: color var(--_animspeed-medium) var(--_animbezier);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mxd-header-permanent .mxd-language-switcher {
+  color: var(--nl-white);
+}
+
+.mxd-language-switcher:focus { outline: none; }
+
+.no-touch .mxd-language-switcher:hover {
+  color: var(--t-medium);
+}
+
+.no-touch .mxd-header-permanent .mxd-language-switcher:hover {
+  color: rgba(var(--nl-white-rgb), 0.7);
+}
+
+.mxd-language-switcher__label {
+  display: inline-block;
+  pointer-events: none;
+}
+
+@media only screen and (min-width: 768px) {
+  .mxd-language-switcher {
+    width: auto;
+    height: 4rem;
+    line-height: 4rem;
+    padding: 0 0.4rem;
+    font-size: 1.6rem;
+  }
+  /* Slash separator between language switcher and color switcher, mirroring
+     the slash inside the color-switcher's own text. */
+  .mxd-language-switcher::after {
+    content: "/";
+    margin: 0 1rem;
+    color: var(--t-medium);
+    pointer-events: none;
+  }
+  .locale-ar .mxd-language-switcher::after {
+    margin: 0 1rem;
+  }
+}
+
+.mxd-language-switcher[lang="ar"] .mxd-language-switcher__label {
+  font-family: var(--ff-arabic);
+  font-weight: 600;
+}
+
+.mxd-header__controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+}
+
+/* ---- 3. RTL: flip arrows and marquee direction ---------------------------- */
+.locale-ar .btn .btn-icon svg,
+.locale-ar .socials-list__arrow svg,
+.locale-ar .mxd-next-prj__arrow svg,
+.locale-ar .form-controls .btn-icon svg,
+.locale-ar .mxd-section-title__controls .btn-icon svg,
+.locale-ar .inner-headline__btngroup .btn svg,
+.locale-ar .inner-headline__tags .btn svg {
+  transform: scaleX(-1);
+}
+
+.locale-ar .btn-default-icon i.btn-icon svg,
+.locale-ar .btn-default-icon-left i.btn-icon svg {
+  transform: scaleX(-1);
+}
+
+/* Icon buttons pad left-heavy for LTR (caption breathing room on the left,
+   icon box hugging the right edge). In RTL the flex order mirrors but the
+   physical padding does not, cramping the caption against the trailing edge
+   and shrinking the button. Mirror the padding so the Arabic button matches
+   the LTR design exactly: caption keeps its room, icon hugs the (left) end. */
+.locale-ar .btn-default-icon {
+  padding: 0.4rem 2rem 0.4rem 0.4rem;
+}
+.locale-ar .btn-default-icon-small {
+  padding: 0.4rem 1.4rem 0.4rem 0.4rem;
+}
+.locale-ar .btn-default-icon-left {
+  padding: 0.4rem 0.4rem 0.4rem 2rem;
+}
+
+.locale-ar .marquee,
+.locale-ar .mxd-promo__marquee { direction: ltr; }
+
+.locale-ar .mxd-promo__caption,
+.locale-ar .mxd-promo__btngroup {
+  direction: rtl;
+  text-align: start;
+}
+
+/* ---- 4. Form / input direction in RTL ------------------------------------- */
+.locale-ar input,
+.locale-ar textarea {
+  text-align: start;
+  font-family: var(--ff-arabic);
+}
+
+.locale-ar input::placeholder,
+.locale-ar textarea::placeholder {
+  text-align: start;
+  font-family: var(--ff-arabic);
+}
+
+/* ---- 5. Header desktop nav: dropdown stays centered in RTL ---------------- */
+/* The base CSS centers the dropdown via left: 50% + translateX(-50%). That
+   works in both directions; we do NOT override inset, so the dropdown remains
+   centered below the trigger. We only mirror the chevron. */
+.locale-ar .bnp-desktop-nav__chevron {
+  transform: scaleX(-1);
+}
+
+.locale-ar .bnp-desktop-nav {
+  direction: rtl;
+}
+
+/* ---- 6. Hero layout: in RTL, image to the LEFT, content to the RIGHT -----
+   The base layout uses `display: flex` with one flex child (.bnp-hero__content,
+   width 68%) and an absolutely-positioned media (.bnp-hero__media, width 48%,
+   anchored to the right with `inset: 0 0 0 auto`).
+   In RTL, the flex child naturally starts at the right edge (writing-direction
+   start), and we just need to flip the absolute media to the LEFT and mirror
+   the mask gradient. We do NOT push the content with margin-inline-start:auto
+   because that would slide it AWAY from the right edge. */
+@media (min-width: 768px) {
+  .locale-ar .bnp-hero__media {
+    inset: 0 auto 0 0;
+    -webkit-mask-image: linear-gradient(to left, transparent, #000 var(--bnp-hero-media-fade));
+            mask-image: linear-gradient(to left, transparent, #000 var(--bnp-hero-media-fade));
+  }
+  /* Content stays at flex-start (right edge in RTL) automatically;
+     no horizontal margin override needed. */
+}
+
+/* ---- 7. Niche-card gradient direction ----------------------------------- */
+/* In LTR (>=1200px) the card overlay gradient runs left-to-right (90deg)
+   anchoring the dark mask on the LEFT so text starting on the LEFT stays
+   readable. In RTL the text now starts on the RIGHT, so we run the gradient
+   270deg (right-to-left) so the dark mask anchors on the RIGHT. */
+@media only screen and (min-width: 1200px) {
+  .locale-ar .mxd-niche-cards__gradient.gradient-linear {
+    background: -webkit-gradient(linear, right top, left top, from(rgba(var(--base-tint-rgb), 1)), color-stop(80%, rgba(var(--base-tint-rgb), 0.2)), to(rgba(var(--base-tint-rgb), 0)));
+    background: -moz-linear-gradient(right, rgba(var(--base-tint-rgb), 1) 0%, rgba(var(--base-tint-rgb), 0.2) 80%, rgba(var(--base-tint-rgb), 0) 100%);
+    background: linear-gradient(270deg, rgba(var(--base-tint-rgb), 1) 0%, rgba(var(--base-tint-rgb), 0.2) 80%, rgba(var(--base-tint-rgb), 0) 100%);
+  }
+}
+
+/* The DT card uses an inline 180deg gradient (top-to-bottom), which is
+   direction-neutral, so no override is needed there. */
+
+/* ---- 8. Two-tone paragraphs (Pre + <span>Em</span> + Post) -----------------
+   Force the inner span to render inline in Arabic. The split-text JS that
+   normally wraps each line in a div is also stripped on Arabic via
+   react-bridge.js, but this rule is a belt-and-braces guarantee that the
+   gray (`.t-medium`) span stays on the same flowing line as its lead. */
+.locale-ar .manifest > span,
+.locale-ar p > span,
+.locale-ar h1 > span,
+.locale-ar h2 > span,
+.locale-ar h3 > span {
+  display: inline;
+  white-space: normal;
+}
+
+/* Some sub-spans live inside SplitText output that uses display:block. After
+   the locale-ar neutralizer strips the parent class, any leftover children
+   get forced inline so two-tone text never wraps. */
+.locale-ar .line {
+  display: inline !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* ---- 9. Section index labels (m/01, ن/02, ع/03, ر/04) -------------------- */
+/* Arabic labels mix Arabic letter + slash + Western digits. The bidi
+   algorithm handles ordering automatically. We just guarantee the font and
+   the digit alignment. */
+.locale-ar .title-number {
+  font-family: var(--ff-arabic);
+  unicode-bidi: plaintext;
+}
+
+/* ---- 10. Footer nav in Arabic --------------------------------------------- */
+/* The cascading rule above already covers footer text. This block is a
+   targeted polish for the footer link spans. */
+.locale-ar .mxd-footer .footer-data,
+.locale-ar .mxd-footer__nav02 a,
+.locale-ar .mxd-footer-nav02__list a,
+.locale-ar .mxd-footer-nav02__list a span,
+.locale-ar .footer-nav-v01__item a,
+.locale-ar .footer-nav-v01__item a span,
+.locale-ar .footer-blocks__data,
+.locale-ar .socials-list__name span,
+.locale-ar .mxd-footer__nav02 .mxd-footer-nav02__title span {
+  font-family: var(--ff-arabic);
+}
+
+/* ---- 11. Menu (overlay) RTL polish --------------------------------------- */
+.locale-ar .menu-data,
+.locale-ar .menu-data__left,
+.locale-ar .menu-data__right {
+  direction: rtl;
+  text-align: start;
+}
+
+.locale-ar .breadcrumbs__nav { direction: rtl; }
+
+/* ---- 12. Mobile-first refinements for Arabic ----------------------------- */
+@media (max-width: 991px) {
+  .locale-ar .inner-headline__title h1 { line-height: 1.2; }
+  .locale-ar .mxd-section-title__title h2 { line-height: 1.3; }
+  .locale-ar .manifest,
+  .locale-ar .manifest-s,
+  .locale-ar .manifest-m { line-height: 1.7; }
+}
+
+/* On mobile the hero is single-column. Arabic matches English exactly:
+   content (headline + button) on top, image below — same source order, same
+   flex-direction. No column-reverse. */
+
+/* ---- 13. Custom cursor positioning in RTL -------------------------------- */
+/* The cursor wrapper, dot, text, and image elements rely on absolute
+   positioning anchored to the wrapper's top-left. In RTL contexts, the
+   default `position: absolute` without explicit `left:` resolves to the
+   inline-start, which flips. Force LTR direction on the cursor tree so the
+   dot and text stay centered on the pointer regardless of page direction. */
+.mxd-cursor,
+.locale-ar .mxd-cursor,
+.locale-ar .mxd-cursor__dot,
+.locale-ar .mxd-cursor__text,
+.locale-ar .mxd-cursor__image,
+.locale-ar .mxd-cursor__image-tr {
+  direction: ltr;
+}
+
+.locale-ar .mxd-cursor__dot,
+.locale-ar .mxd-cursor__text,
+.locale-ar .mxd-cursor__image,
+.locale-ar .mxd-cursor__image-tr {
+  left: 0;
+  right: auto;
+}
+
+/* Arabic cursor text gets its own font; the underlying CSS targets the
+   accent font for LTR which is fine for English/Latin but not for Arabic
+   strings like "تواصل معنا". */
+.locale-ar .mxd-cursor__text {
+  font-family: var(--ff-arabic);
+  font-weight: 700;
+}
+
+/* ---- Article-style pages in RTL (Privacy, Terms) ------------------------
+   The base `.mxd-article__content` rule hard-codes `text-align: left;`. That
+   leaves Arabic body copy left-aligned even though the page is RTL, which
+   looks wrong. Flip to logical `start` and ensure list bullets and headings
+   sit on the correct side. */
+.locale-ar .mxd-article-area,
+.locale-ar .mxd-article-container,
+.locale-ar .mxd-article {
+  direction: rtl;
+}
+
+.locale-ar .mxd-article__content {
+  text-align: start !important;
+}
+
+.locale-ar .mxd-article__excerpt,
+.locale-ar .mxd-article__normal,
+.locale-ar .mxd-article__block h2,
+.locale-ar .mxd-article__block h3,
+.locale-ar .mxd-article__block h4,
+.locale-ar .mxd-article__block p,
+.locale-ar .mxd-article__block li {
+  text-align: start;
+  font-family: var(--ff-arabic);
+}
+
+/* List bullets should sit on the start side (right in RTL). The browser
+   default is `padding-inline-start: 40px` already in modern browsers, but
+   we set it explicitly to guarantee bullets render on the right. */
+.locale-ar .mxd-article__block ul,
+.locale-ar .mxd-article__block ol {
+  padding-inline-start: 2.4rem;
+  padding-inline-end: 0;
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+}
+
+.locale-ar .mxd-article__block li {
+  margin-bottom: 0.6rem;
+  line-height: 1.8;
+}
+
+/* The legal "tag" pill ("Legal" / "قانوني") and title should center the
+   same way they do in English; the headline area uses text-align: center
+   already, so no override is needed for those. */
+
+/* ---- 14. Two-tone paragraph polish (Arabic) -----------------------------
+   Belt-and-braces: even after the bridge strips mxd-split-lines, lingering
+   wrapper divs from the loaded SplitText library can keep `display: block`
+   on per-line spans. Force them inline. */
+.locale-ar .line,
+.locale-ar .word,
+.locale-ar [class*="split-line"],
+.locale-ar [class*="line-mask"] {
+  display: inline !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+}
+
+/* ---- 15. Header & hamburger mirror in RTL --------------------------------
+   The base template positions `.mxd-header` with a physical `left:` offset
+   and `.mxd-menu__contain` (the hamburger trigger) with a physical `right:`
+   offset — neither flips automatically under [dir="rtl"]. In Arabic we want
+   the layout mirrored: brand logo at the right (inline-start), hamburger at
+   the far left (inline-end), and the theme + language switcher cluster
+   sitting next to the hamburger on the same (left) side.
+   The header's existing `display: flex; justify-content: space-between` does
+   the right thing under RTL automatically — first child (logo) ends up at the
+   inline-start (right), last child (controls) at the inline-end (left) — so
+   we only need to mirror the absolute/fixed offsets and the controls' inner
+   padding (which keeps a small gap between the controls cluster and the
+   hamburger). The mobile-only `.mxd-header` left-offset override lives in
+   bnp-mobile.css; its mirror is below in section 16. */
+.locale-ar .mxd-header {
+  left: auto;
+  right: 3rem;
+}
+.locale-ar .mxd-menu__contain {
+  left: 3rem;
+  right: auto;
+}
+.locale-ar .mxd-header__controls {
+  padding-right: 0;
+  padding-left: 1.4rem;
+}
+
+@media only screen and (min-width: 768px) {
+  .locale-ar .mxd-header {
+    left: auto;
+    right: 6rem;
+  }
+  .locale-ar .mxd-menu__contain {
+    left: 6rem;
+    right: auto;
+  }
+  .locale-ar .mxd-header__controls {
+    padding-right: 0;
+    padding-left: 3.5rem;
+  }
+}
+
+@media only screen and (min-width: 1600px) {
+  .locale-ar .mxd-header {
+    left: auto;
+    right: 10rem;
+  }
+  .locale-ar .mxd-menu__contain {
+    left: 10rem;
+    right: auto;
+  }
+}
+
+/* ---- 16. Menu overlay logo mirror in RTL --------------------------------
+   The menu overlay's brand logo (`.mxd-menu__logo`) is absolutely positioned
+   at the inline-start with a physical `left:`. Since the hamburger trigger
+   now lives on the LEFT in RTL (see §15), the overlay logo must move to the
+   RIGHT to avoid overlapping the close button. */
+.locale-ar .mxd-menu__logo {
+  left: auto;
+  right: 3rem;
+}
+@media only screen and (min-width: 768px) {
+  .locale-ar .mxd-menu__logo {
+    left: auto;
+    right: 6rem;
+  }
+}
+@media only screen and (min-width: 1600px) {
+  .locale-ar .mxd-menu__logo {
+    left: auto;
+    right: 10rem;
+  }
+}
+
+/* End of file */

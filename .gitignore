@@ -1,0 +1,8 @@
+# Combined static-site build output (produced by render-build.sh)
+dist/
+
+# OS / editor cruft
+.DS_Store
+*.log
+
+# Per-app node_modules / dist / .env are ignored by each sub-app's own .gitignore

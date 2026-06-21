@@ -1,0 +1,29 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Render Blueprint — partners-portal repo. ONE Static Site serving BOTH apps:
+#   /portal     → onboarding form        (partners-frontend, Vite base "/")
+#   /dashboard  → admin dashboard         (partners-dashboard, Vite base "/dashboard/")
+#   /           → redirects to /portal/
+# Optional: create from Render → "Blueprints", or configure manually (DEPLOY.md).
+# ─────────────────────────────────────────────────────────────────────────────
+services:
+  - type: web
+    runtime: static
+    name: bnp-partners-web
+    rootDir: .                       # this repo root holds render-build.sh + both apps
+    buildCommand: "bash render-build.sh"
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_BASE
+        sync: false                  # set: https://<backend>.onrender.com  (BUILD-TIME)
+      # - key: NODE_VERSION
+      #   value: "20"                # uncomment if Render's default Node is too old
+    routes:
+      - type: rewrite
+        source: /dashboard/*
+        destination: /dashboard/index.html
+      - type: rewrite
+        source: /portal/*
+        destination: /portal/index.html
+      - type: redirect
+        source: /
+        destination: /portal/

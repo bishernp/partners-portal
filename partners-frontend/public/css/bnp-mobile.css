@@ -1,0 +1,259 @@
+/* ===========================================================================
+   BNP Mobile + Tablet refinements
+   ----------------------------------------------------------------------------
+   Loaded AFTER main.css and rtl-i18n.css so these rules win cleanly.
+   Strategy:
+     - Every override is scoped via `@media (max-width: 1199px)` (tablet+mobile)
+       or `@media (max-width: 767px)` (mobile only). Desktop (≥1200px) is
+       deliberately untouched so the existing web layout keeps working byte for
+       byte.
+     - A handful of locale-aware text-align fixes are unscoped because they
+       fix Arabic-only bugs that exist at every width.
+   Sections:
+     1. Horizontal-overflow safety net
+     2. Heading sizing fixes (h1.large nowrap → clamp)
+     3. Mobile section padding scale-down
+     4. Mobile hero — show the image, stacked above the headline
+     5. Mobile header geometry tweak
+     6. Niche-card mobile spacing
+     7. Line-clamp utility classes (replaces JS char-count truncation)
+     8. RTL text-alignment fixes for hard-coded `text-align: left/right`
+   ========================================================================= */
+
+
+/* ---- 1. Horizontal-overflow safety net (mobile + tablet) ----------------- */
+/* `body { overflow-x: unset !important }` in main.css disables the browser's
+   default horizontal-overflow protection. We can't override it without also
+   using !important (and we don't want to fight the template). Instead we put
+   `overflow-x: clip` on the <html> element, which fences the viewport without
+   creating a containing block (so position: sticky still works). */
+@media (max-width: 1199px) {
+  html {
+    overflow-x: clip;
+  }
+}
+
+
+/* ---- 2. Heading sizing — kill the nowrap that overflows on tablet --------
+   main.css:2554 sets `h1.large { white-space: nowrap; font-size: 9rem }` at
+   (min-width: 768px). At 768-1199px (tablet) that pushes large headlines off
+   the screen, especially in Arabic. We force a normal wrap and a clamp-based
+   font-size up to (but not including) the desktop breakpoint. */
+@media (max-width: 1199px) {
+  h1.large {
+    white-space: normal !important;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    font-size: clamp(3.6rem, 4rem + 2.5vw, 7.5rem);
+    line-height: 1.15;
+  }
+  /* Arabic glyphs are wider — ease them in a touch */
+  .locale-ar h1.large {
+    font-size: clamp(2.8rem, 3rem + 2.5vw, 6rem);
+    line-height: 1.25;
+  }
+
+  /* Same nowrap-trap protection for any large h1 inside an inner-headline */
+  .inner-headline__title h1.large {
+    white-space: normal !important;
+    overflow-wrap: anywhere;
+  }
+}
+
+/* Mobile-only: also trim the base h1 (60px on a 360px viewport is too big) */
+@media (max-width: 767px) {
+  h1 {
+    font-size: clamp(3.4rem, 8vw, 4.6rem);
+    letter-spacing: -0.12rem;
+  }
+  h1.small {
+    font-size: clamp(3.2rem, 7.5vw, 4.4rem);
+  }
+  /* Belt-and-braces — the SUP element on the blog title can flip in RTL */
+  h1 sup {
+    unicode-bidi: plaintext;
+  }
+}
+
+
+/* ---- 3. Section padding — mobile gets less vertical breathing room -------
+   main.css uses 12-14rem (120-140px) section padding. On a 360px-wide phone
+   that wastes most of the visible viewport. Scale them down at <=767px while
+   leaving tablet/desktop alone. */
+@media (max-width: 767px) {
+  .mxd-section.padding-top-default        { padding-top: 7rem; }
+  .mxd-section.padding-top-title          { padding-top: 6.4rem; }
+  .mxd-section.padding-top-title-mobile   { padding-top: 6.4rem; }
+  .mxd-section.padding-top-number         { padding-top: 7rem; }
+  .mxd-section.padding-top-number-mobile  { padding-top: 7rem; }
+  .mxd-section.padding-top-manifest-m     { padding-top: 6.6rem; }
+  .mxd-section.padding-top-subtitle       { padding-top: 6.8rem; }
+  .mxd-section.padding-top-subtitle-mobile{ padding-top: 6.8rem; }
+
+  .mxd-section.padding-bottom-default     { padding-bottom: 7rem; }
+  .mxd-section.padding-bottom-t-medium    { padding-bottom: 6.8rem; }
+  .mxd-section.padding-bottom-preview     { padding-bottom: 6.6rem; }
+  .mxd-section.padding-bottom-projects    { padding-bottom: 4rem; }
+}
+
+
+/* ---- 4. Mobile hero — let the brand image show on phones -----------------
+   .bnp-hero__media is `display: none` until 768px. We re-enable it on small
+   screens, stacked below the headline. The container's aspect-ratio matches
+   the source image (2048×2048, square) so `object-fit: cover` never crops —
+   the iconic tower ring at the top of the image stays visible on tall phones
+   (e.g. iPhone 14 Pro Max 430×932) and small phones alike. The tablet+ layout
+   (≥768px) is unchanged. */
+@media (max-width: 767px) {
+  .bnp-hero {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    min-height: auto;
+    padding-top: 9rem; /* clear the absolute header */
+  }
+  .bnp-hero__media {
+    display: block;
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    margin-bottom: 0;
+    z-index: 1;
+    -webkit-mask-image: linear-gradient(to bottom, #000 60%, transparent);
+            mask-image: linear-gradient(to bottom, #000 60%, transparent);
+  }
+  .bnp-hero__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+  }
+  .bnp-hero__content {
+    width: 100%;
+    padding-block: 3rem 4rem;
+  }
+}
+
+
+/* ---- 5. Mobile header — squeeze the side margins so the logo + 2 buttons
+       don't bunch up on a 360px viewport. main.css:4748 sets
+       `left: 3rem; width: calc(100% - 11.5rem)` — only ~245px of usable space
+       on a 360px phone. Reduce the gutters but keep the right-side reserved
+       area for the hamburger trigger.
+       In Arabic the layout is mirrored — header anchored to the RIGHT edge so
+       the LEFT side stays free for the hamburger (see rtl-i18n.css §15). */
+@media (max-width: 767px) {
+  .mxd-header {
+    left: 1.6rem;
+    width: calc(100% - 9.6rem);
+    padding-top: 2.2rem;
+  }
+  .locale-ar .mxd-header {
+    left: auto;
+    right: 1.6rem;
+  }
+  /* Match the hamburger trigger's vertical offset to the header padding-top
+     so the burger icon shares its baseline with the logo and the
+     theme/language switchers. main.css:5044 sets `top: 3rem`, which sat 8px
+     below the (mobile-only) 2.2rem header padding. */
+  .mxd-menu__contain {
+    top: 2.2rem;
+  }
+}
+
+
+/* ---- 6. Niche-card mobile spacing (home page) ----------------------------
+   Bootstrap `g-0` rows on mobile leave the four practice cards touching edge
+   to edge. Add a minimal vertical gap so each card breathes — desktop grid is
+   unchanged because we exit the override at 1200px. */
+@media (max-width: 1199px) {
+  .mxd-niche-cards .row.g-0 > .mxd-niche-cards__column,
+  .mxd-niche-cards .row.g-0 > .mxd-grid-item {
+    margin-bottom: 1.2rem;
+  }
+  .mxd-niche-cards .row.g-0 > .mxd-niche-cards__column:last-child,
+  .mxd-niche-cards .row.g-0 > .mxd-grid-item:last-child {
+    margin-bottom: 0;
+  }
+}
+
+
+/* ---- 7. Line-clamp utility classes ----------------------------------------
+   Used by HomePage and BlogStandardPage to replace character-count JS
+   truncation. Char-count truncation breaks Arabic (wider glyphs => uneven
+   visual lengths and mid-character cuts). CSS line-clamp handles both
+   languages identically. */
+.bnp-clamp-1,
+.bnp-clamp-2,
+.bnp-clamp-3,
+.bnp-clamp-4 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+          box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+.bnp-clamp-1 { -webkit-line-clamp: 1; line-clamp: 1; }
+.bnp-clamp-2 { -webkit-line-clamp: 2; line-clamp: 2; }
+.bnp-clamp-3 { -webkit-line-clamp: 3; line-clamp: 3; }
+.bnp-clamp-4 { -webkit-line-clamp: 4; line-clamp: 4; }
+
+/* When clamp is applied to inline elements (links, h2, p) we have to keep the
+   block-formatting context. Force the element to behave like -webkit-box. */
+a.bnp-clamp-1, a.bnp-clamp-2, a.bnp-clamp-3, a.bnp-clamp-4,
+h2.bnp-clamp-1, h2.bnp-clamp-2, h2.bnp-clamp-3, h2.bnp-clamp-4,
+h3.bnp-clamp-1, h3.bnp-clamp-2, h3.bnp-clamp-3, h3.bnp-clamp-4,
+p.bnp-clamp-1, p.bnp-clamp-2, p.bnp-clamp-3, p.bnp-clamp-4 {
+  display: -webkit-box;
+}
+
+
+/* ---- 8. RTL text-alignment fixes -----------------------------------------
+   main.css has 11 hard-coded `text-align: left` / `text-align: right` rules
+   that ignore the document direction. These render the wrong way in Arabic
+   regardless of viewport. We override the most user-visible ones. */
+.locale-ar .footer-blocks__column.justify-end {
+  text-align: start;
+}
+.locale-ar .mxd-hero-06__headline {
+  text-align: start;
+}
+@media only screen and (min-width: 1200px) {
+  .locale-ar .mxd-hero-06__headline {
+    text-align: end;
+  }
+}
+
+
+/* ---- 9. Niche-card parallax clipping (iOS Safari first-paint fix) --------
+   Each niche card on the home page renders as:
+     .mxd-niche-cards__inner (overflow:hidden, base-tint background)
+       └── .mxd-niche-cards__image (position:relative)
+            ├── img.parallax-img-small  (GSAP applies transform:scale(1.2)
+            │                            + yPercent translate for parallax)
+            └── .mxd-niche-cards__gradient (position:absolute, top:0,
+                                            height:100% — fades from solid
+                                            base-tint at the top to
+                                            transparent at the bottom)
+   On a real phone with a slow / laggy first paint (network jank, large
+   images decoding late, the loader dismissing mid-frame) iOS Safari
+   intermittently fails to clip the parallax-scaled <img> against the
+   ancestor .mxd-niche-cards__inner's overflow:hidden — the image visibly
+   peeks out above the gradient overlay, leaving a gap between the top of
+   the card and where the solid portion of the gradient appears to start.
+   Pinning overflow:hidden directly to the image container — and forcing it
+   onto its own paint layer with translateZ(0) — moves the clip one level
+   closer to the transformed element, which iOS reliably honors at first
+   paint. Desktop already clips correctly via the inner card; the rule is
+   harmless there (image and gradient both still fill the container fully). */
+.mxd-niche-cards__image {
+  overflow: hidden;
+  -webkit-transform: translateZ(0);
+          transform: translateZ(0);
+}
+
+/* End of file */
