@@ -3137,7 +3137,8 @@ function mxdColorSwitcher() {
     }
   }
   function getCurrentTheme(){
-    let theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    // Default to LIGHT for all visitors (ignore OS preference); a saved toggle choice still wins below.
+    let theme = 'light';
     // localStorage.getItem('template.theme') ? theme = localStorage.getItem('template.theme') : null;
     const storedTheme = mxdSafeLocalGet('template.theme');
     if (storedTheme) theme = storedTheme;
