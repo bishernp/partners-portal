@@ -247,7 +247,7 @@ export const SCREENS = [
         ar: "وكل ذلك قائم على السرّية. فما تشاركنا به، والعلاقات التي تختار ذكرها، يبقى طيّ الكتمان ويُعامَل بما يليق بمكانتك.",
       },
       close: {
-        en: "This invitation is personal, and it has been extended with intention. What follows is a brief introduction, so that we may come to know you, and the points at which your interests meet our own. We would be honoured by your consideration.",
+        en: "This invitation is personal, and it has been extended with intention. What follows is a brief introduction, so that we may come to know you, and the points at which your interests meet our own.",
         ar: "هذه دعوة شخصية، وُجِّهت إليك عن قصد. وما يلي تعريف موجز نتعرّف به إليك، ونرى أين تلتقي اهتماماتك باهتماماتنا.",
       },
     },
